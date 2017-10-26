@@ -1,9 +1,12 @@
-package com.lzm.blog;
+package com.lzm.blog.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.lzm.blog.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (mUser != null) {
                     Toast.makeText(MainActivity.this, "Signed in", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(MainActivity.this, PostListActivity.class);
+                    startActivity(intent);
                 } else {
                     Toast.makeText(MainActivity.this, "Not signed in", Toast.LENGTH_LONG).show();
                 }
@@ -61,6 +67,41 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        createActButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String email = emailField.getText().toString();
+                final String password = passwordField.getText().toString();
+
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(MainActivity.this, "User created", Toast.LENGTH_LONG).show();
+                                    login(email, password);
+                                } else {
+                                    Toast.makeText(MainActivity.this, "Error creating user :(", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_signout) {
+            mAuth.signOut();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void login(String email, String password) {
@@ -70,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(MainActivity.this, "Signed in!!", Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(MainActivity.this, PostListActivity.class);
+                            startActivity(intent);
                         } else {
                             Toast.makeText(MainActivity.this, "Error Signing in :(", Toast.LENGTH_LONG).show();
                         }
@@ -81,5 +125,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mAuth != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 }

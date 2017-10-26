@@ -1,7 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
+    <string name="action_add_post">Add Post</string>
+    <string name="action_signout">Signout</string>
+
     <string name="app_name">Blog</string>
-    <string name="form_email">Email</string>
-    <string name="form_password">Password</string>
-    <string name="form_login">Login</string>
+
+    <string name="create_post_description">Post description</string>
+    <string name="create_post_submit">Submit Post</string>
+    <string name="create_post_title">Post title</string>
+
     <string name="form_create_account">Create Account</string>
+    <string name="form_email">Email</string>
+    <string name="form_login">Login</string>
+    <string name="form_password">Password</string>
 </resources>
