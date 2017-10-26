@@ -48,8 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (mUser != null) {
                     Toast.makeText(MainActivity.this, "Signed in", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(MainActivity.this, PostListActivity.class);
-                    startActivity(intent);
+                    goToPostList();
                 } else {
                     Toast.makeText(MainActivity.this, "Not signed in", Toast.LENGTH_LONG).show();
                 }
@@ -90,6 +89,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void goToPostList() {
+        Intent intent = new Intent(MainActivity.this, PostListActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_signout) {
@@ -111,9 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(MainActivity.this, "Signed in!!", Toast.LENGTH_LONG).show();
-
-                            Intent intent = new Intent(MainActivity.this, PostListActivity.class);
-                            startActivity(intent);
+                            goToPostList();
                         } else {
                             Toast.makeText(MainActivity.this, "Error Signing in :(", Toast.LENGTH_LONG).show();
                         }
