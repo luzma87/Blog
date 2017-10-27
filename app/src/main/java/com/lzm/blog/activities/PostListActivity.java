@@ -3,14 +3,24 @@ package com.lzm.blog.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.lzm.blog.R;
+import com.lzm.blog.data.BlogRecyclerAdapter;
+import com.lzm.blog.model.Blog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PostListActivity extends AppCompatActivity {
 
@@ -18,6 +28,10 @@ public class PostListActivity extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private FirebaseUser mUser;
     private FirebaseAuth mAuth;
+
+    private RecyclerView recyclerView;
+    private BlogRecyclerAdapter blogRecyclerAdapter;
+    private List<Blog> blogList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +44,12 @@ public class PostListActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mDatabase.getReference().child("MBlog");
         mDatabaseReference.keepSynced(true);
+
+        blogList = new ArrayList<>();
+
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
 
@@ -59,5 +79,42 @@ public class PostListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mDatabaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Blog blog = dataSnapshot.getValue(Blog.class);
+                blogList.add(blog);
+
+                blogRecyclerAdapter=new BlogRecyclerAdapter(PostListActivity.this, blogList);
+                recyclerView.setAdapter(blogRecyclerAdapter);
+                blogRecyclerAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
