@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.lzm.blog.R;
 import com.lzm.blog.model.Blog;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -46,11 +47,12 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         String formattedDate = dateFormat.format(new Date(date).getTime());
         imageUrl = blog.getImage();
 
-        //TODO: use picasso library to load image
-
         holder.title.setText(blog.getTitle());
         holder.description.setText(blog.getDescription());
         holder.timestamp.setText(formattedDate);
+        Picasso.with(context)
+                .load(imageUrl)
+                .into(holder.image);
     }
 
     @Override
