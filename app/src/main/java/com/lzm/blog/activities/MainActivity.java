@@ -70,21 +70,9 @@ public class MainActivity extends AppCompatActivity {
         createActButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String email = emailField.getText().toString();
-                final String password = passwordField.getText().toString();
-
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(MainActivity.this, "User created", Toast.LENGTH_LONG).show();
-                                    login(email, password);
-                                } else {
-                                    Toast.makeText(MainActivity.this, "Error creating user :(", Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
+                Intent intent = new Intent(MainActivity.this, CreateAccountActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

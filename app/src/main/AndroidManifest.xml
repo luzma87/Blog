@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.PostListActivity" />
-        <activity android:name=".activities.AddPostActivity"></activity>
+        <activity android:name=".activities.AddPostActivity" />
+        <activity android:name=".activities.CreateAccountActivity"></activity>
     </application>
 
 </manifest>
