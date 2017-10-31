@@ -20,6 +20,7 @@ import com.lzm.blog.data.BlogRecyclerAdapter;
 import com.lzm.blog.model.Blog;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PostListActivity extends AppCompatActivity {
@@ -46,6 +47,8 @@ public class PostListActivity extends AppCompatActivity {
         mDatabaseReference.keepSynced(true);
 
         blogList = new ArrayList<>();
+
+        Collections.reverse(blogList);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -91,7 +94,7 @@ public class PostListActivity extends AppCompatActivity {
                 Blog blog = dataSnapshot.getValue(Blog.class);
                 blogList.add(blog);
 
-                blogRecyclerAdapter=new BlogRecyclerAdapter(PostListActivity.this, blogList);
+                blogRecyclerAdapter = new BlogRecyclerAdapter(PostListActivity.this, blogList);
                 recyclerView.setAdapter(blogRecyclerAdapter);
                 blogRecyclerAdapter.notifyDataSetChanged();
             }
