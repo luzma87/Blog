@@ -20,7 +20,8 @@
         </activity>
         <activity android:name=".activities.PostListActivity" />
         <activity android:name=".activities.AddPostActivity" />
-        <activity android:name=".activities.CreateAccountActivity"></activity>
+        <activity android:name=".activities.CreateAccountActivity" />
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
     </application>
 
 </manifest>
